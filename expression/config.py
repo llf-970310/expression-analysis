@@ -1,12 +1,5 @@
-#!/usr/bin/env python3
-# coding: utf-8
-#
-# Created by dylanchu on 18-7-17
-
-
 # -------- RCG --------
 RCG_MAX_RETRY = 3
-
 
 # XUNFEI API interface
 XF_RCG_URL = 'https://api.xfyun.cn/v1/service/v1/iat'
@@ -15,6 +8,8 @@ XF_EVL_URL = 'https://api.xfyun.cn/v1/service/v1/ise'
 XF_EVL_CATEGORY = "read_chapter"
 # rcg_param
 XF_RCG_ENGINE_TYPE = "sms8k"
+# --------------------------
+
 
 # -------- ACCOUNTS --------
 XF_EVL_APP_ID = '5b482315'  # Ordinary account
@@ -78,3 +73,4 @@ INTERVAL_TIME_THRESHOLD3 = 2.0  # 第三种题型的间隔时间阈值
 SEGMENTS_RCG3 = 3  # 第三种识别时分的段数
 SEGMENTS_VOLUME3 = 3  # 第三种题型计算音量时分的段数
 MAIN_IDEA_WORD_COUNT = 30  # 计算主旨关键词是否在前面说到时所用的字数
+# --------------------------

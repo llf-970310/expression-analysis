@@ -110,7 +110,7 @@ def analysis1(wave_file, std_text, timeout=30, rcg_interface='baidu', segments=c
     return result
 
 
-def analysis2(wave_file, wordbase, timeout=30, voice_features=None, rcg_interface='baidu'):
+def analysis2(wave_file, keywords, detailwords, timeout=30, voice_features=None, rcg_interface='baidu'):
     result = {
         'rcg_text': '',
         'key_hits': [],     # key击中列表
@@ -178,8 +178,6 @@ def analysis2(wave_file, wordbase, timeout=30, voice_features=None, rcg_interfac
     result['sentence_num'] = len(feature_text.divide_text_to_sentence(result['rcg_text']))
 
     # 词库击中，谐音
-    keywords, detailwords = wordbase.get('keywords'), wordbase.get('detailwords')
-
     for word in keywords:
         hitwords = feature_text.words_pronunciation(text=result['rcg_text'], answers=word)
         if len(hitwords) >= 1:
