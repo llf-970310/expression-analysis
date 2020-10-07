@@ -21,8 +21,11 @@ def analyze_reading_question(request: AnalyzeReadingQuestionRequest) -> AnalyzeR
     try:
         file = get_wav_file_bytes_io(file_path, "bos")
         if file is not None:
-            result = analysis_features.analysis1(file, std_text)
-            resp.result = json.dumps(result)
+            feature = analysis_features.analysis1(file, std_text)
+            score = analysis_scores.score1(feature, rcg_interface='baidu')
+
+            resp.feature = json.dumps(feature)
+            resp.qualityScore = score["quality"]
             fill_status_of_resp(resp)
         else:
             logging.error('Finally failed to get audio file from bos after retries.')
@@ -78,7 +81,35 @@ def analyze_retelling_question(request: AnalyzeRetellingQuestionRequest) -> Anal
 
 
 def analyze_expression_question(request: AnalyzeExpressionQuestionRequest) -> AnalyzeExpressionQuestionResponse:
-    pass
+    resp = AnalyzeExpressionQuestionResponse()
 
-# def get_retelling_question_score(request: GetRetellingQuestionScoreRequest) -> GetRetellingQuestionScoreResponse:
-#     pass
+    file_path = request.filePath
+    wordbase = request.wordbase
+
+    if file_path == "" or wordbase is None:
+        fill_status_of_resp(resp, InvalidParam())
+        return resp
+
+    try:
+        file = get_wav_file_bytes_io(file_path, "bos")
+        if file is not None:
+            feature = analysis_features.analysis3(file, wordbase, timeout=30)
+            score = analysis_scores.score3(feature)
+
+            resp.feature = json.dumps(feature)
+            resp.structureScore = score["structure"]
+            resp.logicScore = score["logic"]
+            fill_status_of_resp(resp)
+        else:
+            logging.error('Finally failed to get audio file from bos after retries.')
+
+    except Exception as e:
+        tr = traceback.format_exc() + "\naudio:" + file_path + "\nfile_location: bos"
+        print(tr)
+        logging.error('error happened during process task: %s' % e)
+
+        resp.statusCode = -1
+        resp.statusMsg = str(e)
+
+    return resp
+
