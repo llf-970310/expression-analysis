@@ -45,32 +45,40 @@ def analyze_retelling_question(request: AnalyzeRetellingQuestionRequest) -> Anal
     resp = AnalyzeRetellingQuestionResponse()
 
     file_path = request.filePath
+    voice_fatures = request.voiceFeatures
     keywords = request.keywords
     detailwords = request.detailwords
     key_weights = request.keyWeights
     detail_weights = request.detailWeights
 
-    if file_path == "" or file_path is None \
-            or keywords is None or detailwords is None \
-            or key_weights is None or detail_weights is None:
+    if keywords is None or detailwords is None or key_weights is None or detail_weights is None:
+        fill_status_of_resp(resp, InvalidParam())
+        return resp
+
+    if (file_path is None or file_path == "") and (voice_fatures is None or voice_fatures == ""):
         fill_status_of_resp(resp, InvalidParam())
         return resp
 
     try:
-        file = get_wav_file_bytes_io(file_path, "bos")
-        if file is not None:
+        if file_path is not None:
+            file = get_wav_file_bytes_io(file_path, "bos")
             feature = analysis_features.analysis2(file, keywords, detailwords)
-            score = analysis_scores.score2(feature['key_hits'], feature['detail_hits'], key_weights, detail_weights)
-
-            resp.feature = json.dumps(feature)
-            resp.keyScore = score["key"]
-            resp.detailScore = score["detail"]
-            fill_status_of_resp(resp)
+        elif voice_fatures is not None:
+            voice_feature_map = json.loads(voice_fatures)
+            feature = analysis_features.analysis2(None, keywords, detailwords, voice_features=voice_feature_map)
         else:
-            logging.error('Finally failed to get audio file from bos after retries.')
+            logging.error('file_path and voice_features are both invalid.')
+            fill_status_of_resp(resp, InvalidParam())
+            return resp
 
+        score = analysis_scores.score2(feature['key_hits'], feature['detail_hits'], key_weights, detail_weights)
+
+        resp.feature = json.dumps(feature)
+        resp.keyScore = score["key"]
+        resp.detailScore = score["detail"]
+        fill_status_of_resp(resp)
     except Exception as e:
-        tr = traceback.format_exc() + "\naudio:" + file_path + "\nfile_location: bos"
+        tr = traceback.format_exc()
         print(tr)
         logging.error('error happened during process task: %s' % e)
 

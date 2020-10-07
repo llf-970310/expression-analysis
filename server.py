@@ -1,3 +1,5 @@
+import logging
+
 import mongoengine
 from config import MongoConfig
 from analysis import AnalysisService
@@ -32,6 +34,11 @@ if __name__ == '__main__':
         username=MongoConfig.user,
         password=MongoConfig.password
     )
+
+    # init logging
+    LOG_FORMAT = "%(asctime)s - %(levelname)s - %(message)s"
+    DATE_FORMAT = "%Y/%m/%d %H:%M:%S"
+    logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
     # init thrift server
     exam_handler = AnalysisServiceHandler()

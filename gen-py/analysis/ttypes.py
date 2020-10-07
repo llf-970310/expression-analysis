@@ -190,6 +190,7 @@ class AnalyzeRetellingQuestionRequest(object):
     """
     Attributes:
      - filePath
+     - voiceFeatures
      - keywords
      - detailwords
      - keyWeights
@@ -198,8 +199,9 @@ class AnalyzeRetellingQuestionRequest(object):
     """
 
 
-    def __init__(self, filePath=None, keywords=None, detailwords=None, keyWeights=None, detailWeights=None,):
+    def __init__(self, filePath=None, voiceFeatures=None, keywords=None, detailwords=None, keyWeights=None, detailWeights=None,):
         self.filePath = filePath
+        self.voiceFeatures = voiceFeatures
         self.keywords = keywords
         self.detailwords = detailwords
         self.keyWeights = keyWeights
@@ -220,6 +222,11 @@ class AnalyzeRetellingQuestionRequest(object):
                 else:
                     iprot.skip(ftype)
             elif fid == 2:
+                if ftype == TType.STRING:
+                    self.voiceFeatures = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
                 if ftype == TType.LIST:
                     self.keywords = []
                     (_etype3, _size0) = iprot.readListBegin()
@@ -234,7 +241,7 @@ class AnalyzeRetellingQuestionRequest(object):
                     iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
-            elif fid == 3:
+            elif fid == 4:
                 if ftype == TType.LIST:
                     self.detailwords = []
                     (_etype15, _size12) = iprot.readListBegin()
@@ -254,7 +261,7 @@ class AnalyzeRetellingQuestionRequest(object):
                     iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
-            elif fid == 4:
+            elif fid == 5:
                 if ftype == TType.LIST:
                     self.keyWeights = []
                     (_etype33, _size30) = iprot.readListBegin()
@@ -264,7 +271,7 @@ class AnalyzeRetellingQuestionRequest(object):
                     iprot.readListEnd()
                 else:
                     iprot.skip(ftype)
-            elif fid == 5:
+            elif fid == 6:
                 if ftype == TType.LIST:
                     self.detailWeights = []
                     (_etype39, _size36) = iprot.readListBegin()
@@ -288,8 +295,12 @@ class AnalyzeRetellingQuestionRequest(object):
             oprot.writeFieldBegin('filePath', TType.STRING, 1)
             oprot.writeString(self.filePath.encode('utf-8') if sys.version_info[0] == 2 else self.filePath)
             oprot.writeFieldEnd()
+        if self.voiceFeatures is not None:
+            oprot.writeFieldBegin('voiceFeatures', TType.STRING, 2)
+            oprot.writeString(self.voiceFeatures.encode('utf-8') if sys.version_info[0] == 2 else self.voiceFeatures)
+            oprot.writeFieldEnd()
         if self.keywords is not None:
-            oprot.writeFieldBegin('keywords', TType.LIST, 2)
+            oprot.writeFieldBegin('keywords', TType.LIST, 3)
             oprot.writeListBegin(TType.LIST, len(self.keywords))
             for iter42 in self.keywords:
                 oprot.writeListBegin(TType.STRING, len(iter42))
@@ -299,7 +310,7 @@ class AnalyzeRetellingQuestionRequest(object):
             oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.detailwords is not None:
-            oprot.writeFieldBegin('detailwords', TType.LIST, 3)
+            oprot.writeFieldBegin('detailwords', TType.LIST, 4)
             oprot.writeListBegin(TType.LIST, len(self.detailwords))
             for iter44 in self.detailwords:
                 oprot.writeListBegin(TType.LIST, len(iter44))
@@ -312,14 +323,14 @@ class AnalyzeRetellingQuestionRequest(object):
             oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.keyWeights is not None:
-            oprot.writeFieldBegin('keyWeights', TType.LIST, 4)
+            oprot.writeFieldBegin('keyWeights', TType.LIST, 5)
             oprot.writeListBegin(TType.DOUBLE, len(self.keyWeights))
             for iter47 in self.keyWeights:
                 oprot.writeDouble(iter47)
             oprot.writeListEnd()
             oprot.writeFieldEnd()
         if self.detailWeights is not None:
-            oprot.writeFieldBegin('detailWeights', TType.LIST, 5)
+            oprot.writeFieldBegin('detailWeights', TType.LIST, 6)
             oprot.writeListBegin(TType.DOUBLE, len(self.detailWeights))
             for iter48 in self.detailWeights:
                 oprot.writeDouble(iter48)
@@ -329,8 +340,6 @@ class AnalyzeRetellingQuestionRequest(object):
         oprot.writeStructEnd()
 
     def validate(self):
-        if self.filePath is None:
-            raise TProtocolException(message='Required field filePath is unset!')
         if self.keywords is None:
             raise TProtocolException(message='Required field keywords is unset!')
         if self.detailwords is None:
@@ -681,10 +690,11 @@ all_structs.append(AnalyzeRetellingQuestionRequest)
 AnalyzeRetellingQuestionRequest.thrift_spec = (
     None,  # 0
     (1, TType.STRING, 'filePath', 'UTF8', None, ),  # 1
-    (2, TType.LIST, 'keywords', (TType.LIST, (TType.STRING, 'UTF8', False), False), None, ),  # 2
-    (3, TType.LIST, 'detailwords', (TType.LIST, (TType.LIST, (TType.STRING, 'UTF8', False), False), False), None, ),  # 3
-    (4, TType.LIST, 'keyWeights', (TType.DOUBLE, None, False), None, ),  # 4
-    (5, TType.LIST, 'detailWeights', (TType.DOUBLE, None, False), None, ),  # 5
+    (2, TType.STRING, 'voiceFeatures', 'UTF8', None, ),  # 2
+    (3, TType.LIST, 'keywords', (TType.LIST, (TType.STRING, 'UTF8', False), False), None, ),  # 3
+    (4, TType.LIST, 'detailwords', (TType.LIST, (TType.LIST, (TType.STRING, 'UTF8', False), False), False), None, ),  # 4
+    (5, TType.LIST, 'keyWeights', (TType.DOUBLE, None, False), None, ),  # 5
+    (6, TType.LIST, 'detailWeights', (TType.DOUBLE, None, False), None, ),  # 6
 )
 all_structs.append(AnalyzeRetellingQuestionResponse)
 AnalyzeRetellingQuestionResponse.thrift_spec = (
