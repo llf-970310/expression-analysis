@@ -105,7 +105,7 @@ def analysis1(wave_file, std_text, timeout=30, rcg_interface='baidu', segments=c
     # 字数
     result['num'] = feature_text.len_without_punctuation(rcg_text)
     # volume
-    volume_list = feature_audio.get_volume(wave_file_processed, config.SEGMENTS_VOLUME1)
+    volume_list = feature_audio.get_volume(wave_file_processed, segments)
     result['volumes'] = volume_list
     return result
 
