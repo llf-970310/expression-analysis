@@ -121,3 +121,33 @@ def analyze_expression_question(request: AnalyzeExpressionQuestionRequest) -> An
 
     return resp
 
+
+def analyze_sentence(request: AnalyzeSentenceRequest) -> AnalyzeSentenceResponse:
+    resp = AnalyzeSentenceResponse()
+
+    base64_str = request.base64Str
+    segment_num = request.segmentNum
+    wordbase = request.wordbase
+
+    if not base64_str:
+        fill_status_of_resp(resp, InvalidParam())
+        return resp
+
+    try:
+        file = get_wav_file_bytes_io(base64_str, "base64")
+        if file is not None:
+            feature = analysis_features.analysis3(wave_file=file, wordbase=wordbase, segments=segment_num)
+
+            resp.feature = json.dumps(feature)
+            fill_status_of_resp(resp)
+        else:
+            logging.error('Finally failed to get audio file from bos after retries.')
+
+    except Exception as e:
+        logging.error('error happened during process task: %s' % e)
+        traceback.print_exc()
+
+        resp.statusCode = -1
+        resp.statusMsg = str(e)
+
+    return resp

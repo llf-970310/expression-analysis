@@ -31,6 +31,9 @@ class AnalysisServiceHandler:
     def analyzeExpressionQuestion(self, request: AnalyzeExpressionQuestionRequest) -> AnalyzeExpressionQuestionResponse:
         return handler.analyze_expression_question(request)
 
+    def analyzeSentence(self, request: AnalyzeSentenceRequest) -> AnalyzeSentenceResponse:
+        return handler.analyze_sentence(request)
+
 
 if __name__ == '__main__':
     # init mongo

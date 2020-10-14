@@ -672,6 +672,194 @@ class AnalyzeExpressionQuestionResponse(object):
 
     def __ne__(self, other):
         return not (self == other)
+
+
+class AnalyzeSentenceRequest(object):
+    """
+    Attributes:
+     - base64Str
+     - segmentNum
+     - wordbase
+
+    """
+
+
+    def __init__(self, base64Str=None, segmentNum=None, wordbase=None,):
+        self.base64Str = base64Str
+        self.segmentNum = segmentNum
+        self.wordbase = wordbase
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.STRING:
+                    self.base64Str = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.I32:
+                    self.segmentNum = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
+                if ftype == TType.MAP:
+                    self.wordbase = {}
+                    (_ktype66, _vtype67, _size65) = iprot.readMapBegin()
+                    for _i69 in range(_size65):
+                        _key70 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                        _val71 = []
+                        (_etype75, _size72) = iprot.readListBegin()
+                        for _i76 in range(_size72):
+                            _elem77 = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                            _val71.append(_elem77)
+                        iprot.readListEnd()
+                        self.wordbase[_key70] = _val71
+                    iprot.readMapEnd()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('AnalyzeSentenceRequest')
+        if self.base64Str is not None:
+            oprot.writeFieldBegin('base64Str', TType.STRING, 1)
+            oprot.writeString(self.base64Str.encode('utf-8') if sys.version_info[0] == 2 else self.base64Str)
+            oprot.writeFieldEnd()
+        if self.segmentNum is not None:
+            oprot.writeFieldBegin('segmentNum', TType.I32, 2)
+            oprot.writeI32(self.segmentNum)
+            oprot.writeFieldEnd()
+        if self.wordbase is not None:
+            oprot.writeFieldBegin('wordbase', TType.MAP, 3)
+            oprot.writeMapBegin(TType.STRING, TType.LIST, len(self.wordbase))
+            for kiter78, viter79 in self.wordbase.items():
+                oprot.writeString(kiter78.encode('utf-8') if sys.version_info[0] == 2 else kiter78)
+                oprot.writeListBegin(TType.STRING, len(viter79))
+                for iter80 in viter79:
+                    oprot.writeString(iter80.encode('utf-8') if sys.version_info[0] == 2 else iter80)
+                oprot.writeListEnd()
+            oprot.writeMapEnd()
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        if self.base64Str is None:
+            raise TProtocolException(message='Required field base64Str is unset!')
+        if self.segmentNum is None:
+            raise TProtocolException(message='Required field segmentNum is unset!')
+        if self.wordbase is None:
+            raise TProtocolException(message='Required field wordbase is unset!')
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
+
+
+class AnalyzeSentenceResponse(object):
+    """
+    Attributes:
+     - feature
+     - statusCode
+     - statusMsg
+
+    """
+
+
+    def __init__(self, feature=None, statusCode=None, statusMsg=None,):
+        self.feature = feature
+        self.statusCode = statusCode
+        self.statusMsg = statusMsg
+
+    def read(self, iprot):
+        if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
+            iprot._fast_decode(self, iprot, [self.__class__, self.thrift_spec])
+            return
+        iprot.readStructBegin()
+        while True:
+            (fname, ftype, fid) = iprot.readFieldBegin()
+            if ftype == TType.STOP:
+                break
+            if fid == 1:
+                if ftype == TType.STRING:
+                    self.feature = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 2:
+                if ftype == TType.I32:
+                    self.statusCode = iprot.readI32()
+                else:
+                    iprot.skip(ftype)
+            elif fid == 3:
+                if ftype == TType.STRING:
+                    self.statusMsg = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                else:
+                    iprot.skip(ftype)
+            else:
+                iprot.skip(ftype)
+            iprot.readFieldEnd()
+        iprot.readStructEnd()
+
+    def write(self, oprot):
+        if oprot._fast_encode is not None and self.thrift_spec is not None:
+            oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
+            return
+        oprot.writeStructBegin('AnalyzeSentenceResponse')
+        if self.feature is not None:
+            oprot.writeFieldBegin('feature', TType.STRING, 1)
+            oprot.writeString(self.feature.encode('utf-8') if sys.version_info[0] == 2 else self.feature)
+            oprot.writeFieldEnd()
+        if self.statusCode is not None:
+            oprot.writeFieldBegin('statusCode', TType.I32, 2)
+            oprot.writeI32(self.statusCode)
+            oprot.writeFieldEnd()
+        if self.statusMsg is not None:
+            oprot.writeFieldBegin('statusMsg', TType.STRING, 3)
+            oprot.writeString(self.statusMsg.encode('utf-8') if sys.version_info[0] == 2 else self.statusMsg)
+            oprot.writeFieldEnd()
+        oprot.writeFieldStop()
+        oprot.writeStructEnd()
+
+    def validate(self):
+        if self.feature is None:
+            raise TProtocolException(message='Required field feature is unset!')
+        if self.statusCode is None:
+            raise TProtocolException(message='Required field statusCode is unset!')
+        if self.statusMsg is None:
+            raise TProtocolException(message='Required field statusMsg is unset!')
+        return
+
+    def __repr__(self):
+        L = ['%s=%r' % (key, value)
+             for key, value in self.__dict__.items()]
+        return '%s(%s)' % (self.__class__.__name__, ', '.join(L))
+
+    def __eq__(self, other):
+        return isinstance(other, self.__class__) and self.__dict__ == other.__dict__
+
+    def __ne__(self, other):
+        return not (self == other)
 all_structs.append(AnalyzeReadingQuestionRequest)
 AnalyzeReadingQuestionRequest.thrift_spec = (
     None,  # 0
@@ -719,6 +907,20 @@ AnalyzeExpressionQuestionResponse.thrift_spec = (
     (3, TType.DOUBLE, 'logicScore', None, None, ),  # 3
     (4, TType.I32, 'statusCode', None, None, ),  # 4
     (5, TType.STRING, 'statusMsg', 'UTF8', None, ),  # 5
+)
+all_structs.append(AnalyzeSentenceRequest)
+AnalyzeSentenceRequest.thrift_spec = (
+    None,  # 0
+    (1, TType.STRING, 'base64Str', 'UTF8', None, ),  # 1
+    (2, TType.I32, 'segmentNum', None, None, ),  # 2
+    (3, TType.MAP, 'wordbase', (TType.STRING, 'UTF8', TType.LIST, (TType.STRING, 'UTF8', False), False), None, ),  # 3
+)
+all_structs.append(AnalyzeSentenceResponse)
+AnalyzeSentenceResponse.thrift_spec = (
+    None,  # 0
+    (1, TType.STRING, 'feature', 'UTF8', None, ),  # 1
+    (2, TType.I32, 'statusCode', None, None, ),  # 2
+    (3, TType.STRING, 'statusMsg', 'UTF8', None, ),  # 3
 )
 fix_spec(all_structs)
 del all_structs

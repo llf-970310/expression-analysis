@@ -2,6 +2,8 @@
 # coding: utf-8
 #
 # Created by dylanchu on 19-3-10
+import base64
+import re
 
 import config
 import io
@@ -66,6 +68,9 @@ def get_wav_file_bytes_io(file_key, location='bos', bos_retries=10, retry_interv
     elif location.lower() == 'local':
         with open(file_key, 'rb') as f:
             file = io.BytesIO(f.read())
+    elif location.lower() == 'base64':
+        base64_data = re.sub('^data:audio/.+;base64,', '', file_key)
+        file = io.BytesIO(base64.b64decode(base64_data))
     if file is None:
         raise Exception('Failed to get file from BOS after retries %s' % bos_retries)
     if file_key.strip().endswith('.m4a'):  # 小程序的m4a转换为pcm

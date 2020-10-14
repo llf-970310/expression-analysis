@@ -99,9 +99,10 @@ def analysis1(wave_file, std_text, timeout=30, rcg_interface='baidu', segments=c
             result['speed'] = numpy.mean(result['speeds'])
             result['speed_deviation'] = numpy.std(result['speeds'])
     # clr_ratio,ftl_ratio,cpl_ratio
-    cfc = feature_audio.get_cfc(rcg_text, std_text)
-    result['clr_ratio'], result['ftl_ratio'], result['cpl_ratio'] = cfc['clr_ratio'], cfc['ftl_ratio'], cfc[
-        'cpl_ratio']
+    if std_text:
+        cfc = feature_audio.get_cfc(rcg_text, std_text)
+        result['clr_ratio'], result['ftl_ratio'], result['cpl_ratio'] = cfc['clr_ratio'], cfc['ftl_ratio'], cfc[
+            'cpl_ratio']
     # 字数
     result['num'] = feature_text.len_without_punctuation(rcg_text)
     # volume
@@ -213,27 +214,7 @@ def analysis3(wave_file, wordbase, timeout=30, rcg_interface='baidu', segments=c
         'last_time': 0,
         'interval_num': 0,
         'interval_ratio': 0,
-        'n_ratio': 0,
-        'v_ratio': 0,
-        'vd_ratio': 0,
-        'vn_ratio': 0,
-        'a_ratio': 0,
-        'ad_ratio': 0,
-        'an_ratio': 0,
-        'd_ratio': 0,
-        'm_ratio': 0,
-        'q_ratio': 0,
-        'r_ratio': 0,
-        'p_ratio': 0,
-        'c_ratio': 0,
-        'u_ratio': 0,
-        'xc_ratio': 0,
-        'w_ratio': 0,
-        'ne_ratio': 0,
         'word_num': 0,
-        'noun_frequency_2': 0,
-        'noun_frequency_3': 0,
-        'noun_frequency_4': 0,
         'sentence_num': 0,
         'sum-aspects_num': 0,
         'aspects_num': 0,

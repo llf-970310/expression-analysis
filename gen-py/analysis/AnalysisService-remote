@@ -27,6 +27,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('  AnalyzeReadingQuestionResponse analyzeReadingQuestion(AnalyzeReadingQuestionRequest request)')
     print('  AnalyzeRetellingQuestionResponse analyzeRetellingQuestion(AnalyzeRetellingQuestionRequest request)')
     print('  AnalyzeExpressionQuestionResponse analyzeExpressionQuestion(AnalyzeExpressionQuestionRequest request)')
+    print('  AnalyzeSentenceResponse analyzeSentence(AnalyzeSentenceRequest request)')
     print('')
     sys.exit(0)
 
@@ -123,6 +124,12 @@ elif cmd == 'analyzeExpressionQuestion':
         print('analyzeExpressionQuestion requires 1 args')
         sys.exit(1)
     pp.pprint(client.analyzeExpressionQuestion(eval(args[0]),))
+
+elif cmd == 'analyzeSentence':
+    if len(args) != 1:
+        print('analyzeSentence requires 1 args')
+        sys.exit(1)
+    pp.pprint(client.analyzeSentence(eval(args[0]),))
 
 else:
     print('Unrecognized method %s' % cmd)
