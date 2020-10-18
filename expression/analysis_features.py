@@ -206,7 +206,7 @@ def analysis2(wave_file, keywords, detailwords, timeout=30, voice_features=None,
     return result
 
 
-def analysis3(wave_file, wordbase, timeout=30, rcg_interface='baidu'):
+def analysis3(wave_file, wordbase, timeout=30, rcg_interface='baidu', segments=config.SEGMENTS_RCG3):
     result = {
         'rcg_text': '',
         'num': 0,
@@ -263,10 +263,10 @@ def analysis3(wave_file, wordbase, timeout=30, rcg_interface='baidu'):
         result['interval_ratio'] /= result['last_time']
     # 识别用擦除过的文件，显式指定分段
     rcg_result_file = io.StringIO()
-    base_recognise.rcg_and_save(wave_file_processed, rcg_result_file, segments=config.SEGMENTS_RCG3, timeout=timeout,
+    base_recognise.rcg_and_save(wave_file_processed, rcg_result_file, segments=segments, timeout=timeout,
                                 rcg_interface=rcg_interface, use_pro_api=True)  # pro_api: 极速版50qps,16k
     temp = json.loads(rcg_result_file.getvalue()).get('data')
-    if temp and len(temp) == config.SEGMENTS_RCG3:
+    if temp and len(temp) == segments:
         rcg_text = ''.join(temp)
     else:
         rcg_text = ''
@@ -288,7 +288,7 @@ def analysis3(wave_file, wordbase, timeout=30, rcg_interface='baidu'):
     # speed
     if not result['last_time'] == 0:
         result['speeds'] = [
-            config.SEGMENTS_RCG3 * feature_text.len_without_punctuation(rcg_text_seg) / result['last_time'] for
+            segments * feature_text.len_without_punctuation(rcg_text_seg) / result['last_time'] for
             rcg_text_seg in temp]
     # volume
     result['volumes'] = feature_audio.get_volume(wave_file_processed, config.SEGMENTS_VOLUME3)
