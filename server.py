@@ -50,7 +50,7 @@ if __name__ == '__main__':
     # init thrift server
     exam_handler = AnalysisServiceHandler()
     processor = AnalysisService.Processor(exam_handler)
-    transport = TSocket.TServerSocket(host='127.0.0.1', port=9093)
+    transport = TSocket.TServerSocket(host='0.0.0.0', port=9093)
     tfactory = TTransport.TBufferedTransportFactory()
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 
